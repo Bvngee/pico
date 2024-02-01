@@ -388,12 +388,15 @@ class VL53L4CD:
             length = len(data)
         with self.i2c_device as i2c:
             i2c.write(struct.pack(">H", address) + data[:length])
+        #self._i2c.writeto(address, struct.pack(">H", address) + data[:length])
 
     def _read_register(self, address, length=1):
         data = bytearray(length)
         with self.i2c_device as i2c:
             i2c.write(struct.pack(">H", address))
             i2c.readinto(data)
+        #self._i2c.writeto(address, struct.pack(">H", address))
+        #self._i2c.readinto(data)
         return data
 
     def set_address(self, new_address):

@@ -7,15 +7,8 @@
 ====================================================
 """
 
-import time
-
 try:
     from typing import Optional, Type
-    from types import TracebackType
-    #from circuitpython_typing import ReadableBuffer, WriteableBuffer
-
-    # Used only for type annotations.
-    #from busio import I2C
 except ImportError:
     pass
 
@@ -53,7 +46,6 @@ class I2CDevice:
             with device:
                 device.write(bytes_read)
     """
-
     def __init__(self, i2c, device_address: int, probe: bool = True) -> None:
         self.i2c = i2c
         self.device_address = device_address
@@ -78,7 +70,7 @@ class I2CDevice:
         """
         if end is None:
             end = len(buf)
-        self.i2c.readfrom_into(self.device_address, buf, start=start, end=end)
+        self.i2c.readfrom_into(self.device_address, buf)
 
     def write(
         self, buf, *, start: int = 0, end: Optional[int] = None
@@ -97,7 +89,7 @@ class I2CDevice:
         """
         if end is None:
             end = len(buf)
-        self.i2c.writeto(self.device_address, buf, start=start, end=end)
+        self.i2c.writeto(self.device_address, buf)
 
     # pylint: disable-msg=too-many-arguments
     def write_then_readinto(
@@ -137,21 +129,27 @@ class I2CDevice:
         if in_end is None:
             in_end = len(in_buffer)
 
-        self.i2c.writeto_then_readfrom(
+        # self.i2c.writeto_then_readfrom(
+        #     self.device_address,
+        #     out_buffer,
+        #     in_buffer,
+        #     out_start=out_start,
+        #     out_end=out_end,
+        #     in_start=in_start,
+        #     in_end=in_end,
+        # )
+        self.i2c.writeto(
             self.device_address,
             out_buffer,
+        )
+        self.i2c.readfrom(
+            self.device_address,
             in_buffer,
-            out_start=out_start,
-            out_end=out_end,
-            in_start=in_start,
-            in_end=in_end,
         )
 
     # pylint: enable-msg=too-many-arguments
 
     def __enter__(self) -> "I2CDevice":
-        while not self.i2c.try_lock():
-            time.sleep(0)
         return self
 
     def __exit__(
@@ -160,7 +158,6 @@ class I2CDevice:
         exc_val: Optional[BaseException],
         exc_tb,
     ) -> bool:
-        self.i2c.unlock()
         return False
 
     def __probe_for_device(self) -> None:
@@ -169,8 +166,6 @@ class I2CDevice:
         if you get an OSError it means the device is not there
         or that the device does not support these means of probing
         """
-        while not self.i2c.try_lock():
-            time.sleep(0)
         try:
             self.i2c.writeto(self.device_address, b"")
         except OSError:
@@ -183,5 +178,3 @@ class I2CDevice:
                 # pylint: disable=raise-missing-from
                 raise ValueError("No I2C device at address: 0x%x" % self.device_address)
                 # pylint: enable=raise-missing-from
-        finally:
-            self.i2c.unlock()
