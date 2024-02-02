@@ -104,5 +104,6 @@ while True:
         pass
     vl53.clear_interrupt()
     try:
-        print("Distance: {} cm".format(vl53.distance))
-    except: ...
+        distance = vl53.distance
+        print("Distance: {} cm".format(distance))
+    except: ... # still crashes

@@ -1,4 +1,4 @@
-#!/home/jack/dev/CSA/pico/.venv/bin/python
+#!/home/jack/dev/ElectronicsWorkshop/pico/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

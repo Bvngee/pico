@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/jack/dev/CSA/pico/.venv"
+set -gx VIRTUAL_ENV "/home/jack/dev/ElectronicsWorkshop/pico/.venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

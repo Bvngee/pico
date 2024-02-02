@@ -1,7 +1,8 @@
 from machine import Pin, PWM
-from utime import sleep
+from utime import sleep, sleep_ms
 
-continuous_servo_pwm = PWM(Pin(1), freq=20)
+servo_freq = 20
+continuous_servo_pwm = PWM(Pin(0), freq=servo_freq)
 
 led = Pin("LED", Pin.OUT)
 ina1 = Pin(18, Pin.OUT)
@@ -33,23 +34,32 @@ def StopMotor():
     
 
 def RotateServoCW():
-    continuous_servo_pwm.duty_u16(round((1.0/(1000/50)) * 65536))
+    continuous_servo_pwm.duty_u16(round((0.7/servo_freq) * 65536))
 
 def RotateServoCCW():
-    continuous_servo_pwm.duty_u16(round((2.0/(1000/50)) * 65536))
+    continuous_servo_pwm.duty_u16(round((2.3/servo_freq) * 65536))
 
 def StopServoMotor():
-    continuous_servo_pwm.duty_u16(round((1.5/(1000/50)) * 65536))
+    continuous_servo_pwm.duty_u16(round((1.5/servo_freq) * 65536))
 
 
-while True:
-    #duty_cycle = 500
+duty_cycle = 500
+while ...:
+    # RotateCW(duty_cycle)
+    # sleep(3)
+    # StopMotor()
+    # RotateCCW(duty_cycle)
+    # sleep(3)
+    # StopMotor()
 
     RotateServoCW()
-    sleep(5)
-    RotateServoCCW()
-    sleep(5)
+    sleep(3)
     StopServoMotor()
+    sleep(3)
+    RotateServoCCW()
+    sleep(3)
+    StopServoMotor()
+    sleep(3)
 
 
 
