@@ -5,33 +5,32 @@ import utime
 MAX_DUTY_CYCLE = 65535
 MIN_DUTY_CYCLE = 0
 
-motor_pins = [16, 17]
-frequency = 100
+frequency = 100000
 
-left_motor_pin1 = PWM(Pin(motor_pins[0], mode=Pin.OUT))
-left_motor_pin2 = PWM(Pin(motor_pins[1], mode=Pin.OUT))
-# right_motor_pin1 = PWM(Pin(motor_pins[2], mode=Pin.OUT))
-# right_motor_pin2 = PWM(Pin(motor_pins[3], mode=Pin.OUT))
+motor_a_pin1 = PWM(Pin(0, mode=Pin.OUT))
+motor_a_pin2 = PWM(Pin(1, mode=Pin.OUT))
+motor_b_pin1 = PWM(Pin(2, mode=Pin.OUT))
+motor_b_pin2 = PWM(Pin(3, mode=Pin.OUT))
 
-left_motor_pin1.freq(frequency)
-left_motor_pin2.freq(frequency)
-# right_motor_pin1.freq(frequency)
-# right_motor_pin2.freq(frequency)
+motor_a_pin1.freq(frequency)
+motor_a_pin2.freq(frequency)
+motor_b_pin1.freq(frequency)
+motor_b_pin2.freq(frequency)
 
 current_speed = MAX_DUTY_CYCLE
     
 def move_forward():
-    left_motor_pin1.duty_u16(current_speed)
-    left_motor_pin2.duty_u16(MIN_DUTY_CYCLE)
-    # right_motor_pin1.duty_u16(current_speed)
-    # right_motor_pin2.duty_u16(MIN_DUTY_CYCLE)
+    motor_a_pin1.duty_u16(current_speed)
+    motor_a_pin2.duty_u16(MIN_DUTY_CYCLE)
+    motor_b_pin1.duty_u16(current_speed)
+    motor_b_pin2.duty_u16(MIN_DUTY_CYCLE)
        
 def move_backward():
-    left_motor_pin1.duty_u16(MIN_DUTY_CYCLE)
-    left_motor_pin2.duty_u16(current_speed)
-    # right_motor_pin1.duty_u16(MIN_DUTY_CYCLE)
-    # right_motor_pin2.duty_u16(current_speed)
-    
+    motor_a_pin1.duty_u16(MIN_DUTY_CYCLE)
+    motor_a_pin2.duty_u16(current_speed)
+    motor_b_pin1.duty_u16(MIN_DUTY_CYCLE)
+    motor_b_pin2.duty_u16(current_speed)
+
 # def turn_left():
 #     left_motor_pin1.duty_u16(current_speed)
 #     left_motor_pin2.duty_u16(MIN_DUTY_CYCLE)
@@ -45,10 +44,10 @@ def move_backward():
 #     # right_motor_pin2.duty_u16(MIN_DUTY_CYCLE)
     
 def stop():
-    left_motor_pin1.duty_u16(MIN_DUTY_CYCLE)
-    left_motor_pin2.duty_u16(MIN_DUTY_CYCLE)
-    # right_motor_pin1.duty_u16(MIN_DUTY_CYCLE)
-    # right_motor_pin2.duty_u16(MIN_DUTY_CYCLE)
+    motor_a_pin1.duty_u16(MIN_DUTY_CYCLE)
+    motor_a_pin2.duty_u16(MIN_DUTY_CYCLE)
+    motor_b_pin1.duty_u16(MIN_DUTY_CYCLE)
+    motor_b_pin2.duty_u16(MIN_DUTY_CYCLE)
     
 ''' Map duty cycle values from 0-100 to duty cycle 40000-65535 '''
 def __map_range(x, in_min, in_max, out_min, out_max):
@@ -62,19 +61,20 @@ def change_speed(new_speed):
     
 def deinit():
     """deinit PWM Pins"""
-    print("Deinitializing PWM Pins")
     stop()
     utime.sleep(0.1)
-    left_motor_pin1.deinit()
-    left_motor_pin2.deinit()
-    # right_motor_pin1.deinit()
-    # right_motor_pin2.deinit()
+    motor_a_pin1.deinit()
+    motor_a_pin2.deinit()
+    motor_b_pin1.deinit()
+    motor_b_pin2.deinit()
 
 
 try:
     print("hi")
     move_forward()
-    sleep(2)
+    sleep(1.5)
+    stop()
+    sleep(1.5)
     move_backward()
     sleep(2)
     deinit()
