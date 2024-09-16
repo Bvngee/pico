@@ -1,0 +1,11 @@
+# I shamelessly copy-pasted these files, don't try to claim I wrote them
+adafruit_motor/** linguist-vendored
+adafruit_register/** linguist-vendored
+qwiic_i2c/** linguist-vendored
+
+adafruit_as726x.py linguist-vendored
+i2c_device.py linguist-vendored
+qwiic_vl53l1x.py linguist-vendored
+vl53l0x.py linguist-vendored
+VL53L0X.py linguist-vendored
+vl53l4cd.py linguist-vendored
